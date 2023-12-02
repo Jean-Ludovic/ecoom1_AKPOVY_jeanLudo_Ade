@@ -28,6 +28,8 @@
                     <input id="pwd" name="pwd" type="password" placeholder="Password">
                     <i class='bx bxs-lock-alt'></i>
                 </div>
+                <button type="submit" class="btn">Login</button>
+
                 <div class="register-link">
                     <p>Don't have an account?
                         <a href="./signup.php">Register</a>
