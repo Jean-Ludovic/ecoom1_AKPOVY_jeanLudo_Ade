@@ -134,3 +134,20 @@ function pwdLenghtValidation($pwd)
         ];
     }
 }
+function getUserByUsername(string $username)
+{
+    global $conn;
+
+    $query = "SELECT * FROM user WHERE user_name = ?";
+    if ($stmt = mysqli_prepare($conn, $query)) {
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+        $user = mysqli_fetch_assoc($result);
+
+        return $user;
+    }
+
+    return null;
+}
