@@ -1,11 +1,12 @@
 <?php
 require_once("../Configuration/connexion.php");
 
-function createUser(array $data) {
+function createUser(array $data)
+{
     global $conn;
-    
+
     $query = "INSERT INTO user VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    if ($stmt =mysqli_prepare($conn, $query)) {
+    if ($stmt = mysqli_prepare($conn, $query)) {
         mysqli_stmt_bind_param(
             $stmt,
             "sss",
@@ -24,14 +25,13 @@ function createUser(array $data) {
     }
 }
 
-function getUserByUsername(string $user_name) {
+function getUserByUsername(string $user_name)
+{
     global $conn;
 
     $query = "SELECT * FROM user WHERE user.user_name = '" . $user_name . "';";
-    $result= mysqli_query($conn, $query);
+    $result = mysqli_query($conn, $query);
 
-    $data= mysqli_fetch_assoc(($result));
+    $data = mysqli_fetch_assoc(($result));
     return $data;
-    
 }
-?>

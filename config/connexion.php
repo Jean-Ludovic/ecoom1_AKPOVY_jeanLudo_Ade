@@ -8,8 +8,7 @@ $db = "ecom1_projet";
 $conn = mysqli_connect($server, $userName, $pwd, $db);
 if ($conn) {
     echo "connected to the $db database succesfully";
-    global $conn; 
+    global $conn;
 } else {
     echo "Error: Not connected to the $db database";
 }
-?>

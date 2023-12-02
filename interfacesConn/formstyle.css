@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px;
+}
+
+.return-link {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.signup-form {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+legend {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.signup-link {
+    text-align: center;
+}
+
+.signup-link p {
+    margin-bottom: 10px;
+}
+
+.signup-link a {
+    color: #4caf50;
+}

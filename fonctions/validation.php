@@ -29,8 +29,7 @@ function usernameIsValid(string $user_name): array
             'msg' => 'Veuillez saisir un Username'
 
         ];
-    }
-    elseif ($userInDB) {
+    } elseif ($userInDB) {
         $result = [
             'isValid' => false,
             'msg' => 'Le username est déjà utilisé'
@@ -40,55 +39,55 @@ function usernameIsValid(string $user_name): array
 }
 
 
-function fnameIsValid($fname) {
-    $length= strlen($fname);
-    $valeur= is_string($fname);
+function fnameIsValid($fname)
+{
+    $length = strlen($fname);
+    $valeur = is_string($fname);
     $responses = [
         'isValid' => true,
         'msg' => ''
     ];
 
-    if ($length >=51){
-        $responses=[
+    if ($length >= 51) {
+        $responses = [
             'isValid' => false,
             'msg' => 'Prenom trop long'
         ];
-    } elseif ($length<=2) {
-        $responses= [
-            'isValid' =>false,
+    } elseif ($length <= 2) {
+        $responses = [
+            'isValid' => false,
             'msg' => 'Prenom trop court'
         ];
-    } elseif ($length =0) {
-        $responses=[
+    } elseif ($length = 0) {
+        $responses = [
             'isValid' => false,
             'msg' => 'Case Prenom est non rempli'
         ];
     }
     return $responses;
     return $valeur;
-
-
 }
 
-function lnameIsValid($lname) {
+function lnameIsValid($lname)
+{
     $length = strlen($lname);
     $valeur = is_string($lname);
-    $responses =[
+    $responses = [
         'isValid' => true,
         'msg' => ''
     ];
-    if ($length >=51){
-        $responses=[
+    if ($length >= 51) {
+        $responses = [
             'isValid' => false,
             'msg' => 'Nom trop long'
         ];
-    } elseif ($length<=2) {
-        $responses= [
-            'isValid' =>false,
+    } elseif ($length <= 2) {
+        $responses = [
+            'isValid' => false,
             'msg' => 'Nom trop court'
         ];
-    } elseif ($length =0) {
-        $responses=[
+    } elseif ($length = 0) {
+        $responses = [
             'isValid' => false,
             'msg' => 'Case Nom est non rempli'
         ];
@@ -134,9 +133,4 @@ function pwdLenghtValidation($pwd)
             'msg' => 'Votre mot de passe est trop long. Doit être inférieur a 16 caractères'
         ];
     }
-
 }
-
-
-
-?>
