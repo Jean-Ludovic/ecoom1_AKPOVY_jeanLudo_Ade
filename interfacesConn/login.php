@@ -31,9 +31,11 @@
                 <button type="submit" class="btn">Login</button>
 
                 <div class="register-link">
-                    <p>Don't have an account?
-                        <a href="./signup.php">Register</a>
-                    </p>
+                    <h3>
+                        <p>Don't have an account?
+                            <a href="./signup.php">Register</a>
+                        </p>
+                    </h3>
                 </div>
 
 </body>

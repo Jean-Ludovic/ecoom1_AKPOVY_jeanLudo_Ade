@@ -68,3 +68,43 @@ function createUser(array $data)
         return $errorMessage;
     }
 }
+
+
+require_once("connexion.php");
+
+function loginUser($user_name, $pwd)
+{
+    global $conn;
+
+    // Vérifiez l'authentification en fonction de votre logique
+    // Je vais utiliser une requête simple pour illustrer, mais vous devriez améliorer cela avec des méthodes sécurisées
+
+    $query = "SELECT user_id, role_id FROM user WHERE user_name = ? AND pwd = ? LIMIT 1";
+
+    if ($stmt = mysqli_prepare($conn, $query)) {
+        mysqli_stmt_bind_param($stmt, "ss", $user_name, $pwd);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $user_id, $role_id);
+
+        if (mysqli_stmt_fetch($stmt)) {
+            // Authentification réussie, retournez les informations nécessaires
+            return [
+                'success' => true,
+                'user_id' => $user_id,
+                'role_id' => $role_id
+            ];
+        } else {
+            // Authentification échouée
+            return [
+                'success' => false
+            ];
+        }
+
+        mysqli_stmt_close($stmt);
+    } else {
+        // Erreur de préparation de la requête
+        return [
+            'success' => false
+        ];
+    }
+}

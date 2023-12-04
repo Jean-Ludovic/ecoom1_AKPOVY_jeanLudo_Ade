@@ -70,3 +70,10 @@ button {
 button:hover {
     background-color: #eee;
 }
+.register-link a {
+    color: #3498db; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+
