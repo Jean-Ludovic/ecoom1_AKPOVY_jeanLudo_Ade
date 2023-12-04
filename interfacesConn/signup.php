@@ -1,3 +1,10 @@
+<?php
+require_once("../config/connexion.php");
+require_once("../config/signUp_process.php");
+require_once("../fonctions/userCrud.php");
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,6 +67,7 @@
 
 
                 <button type="submit">Sign Up</button>
+
             </fieldset>
         </form>
     </div>

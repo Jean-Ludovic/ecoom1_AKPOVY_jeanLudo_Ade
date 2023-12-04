@@ -1,55 +1,68 @@
 <?php
-require_once("../Configuration/connexion.php");
+require_once("../fonctions/validation.php");
 
 function createUser(array $data)
 {
     global $conn;
 
-    // Validation des données supplémentaires 
+    // Additional data validation
     $usernameValidation = usernameIsValid($data['user_name']);
     $fnameValidation = fnameIsValid($data['fname']);
     $lnameValidation = lnameIsValid($data['lname']);
     $emailValidation = emailIsValid($data['email']);
     $pwdValidation = pwdLenghtValidation($data['pwd']);
 
-    // Vérification de toutes les validations
+    // Check all validations
     if (!$usernameValidation['isValid'] || !$fnameValidation['isValid'] || !$lnameValidation['isValid'] || !$emailValidation['isValid'] || !$pwdValidation['isValid']) {
-        // Une ou plusieurs validations ont échoué, renvoyer un message d'erreur 
-        $errorMessage = "Erreur de validation. Veuillez corriger les erreurs.";
+        // One or more validations failed, return an error message
+        $errorMessage = "<br><br>Error in validation. Please correct the errors.";
         return $errorMessage;
     }
 
-    // Toutes les validations sont réussies, procéder à l'insertion dans la base de données
+    // All validations succeeded, proceed with the insertion into the database
     $query = "INSERT INTO user VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
     if ($stmt = mysqli_prepare($conn, $query)) {
+        $user_name = $data['user_name'];
+        $email = $data['email'];
+        $pwd = $data['pwd'];
+        $fname = $data['fname'];
+        $lname = $data['lname'];
+        $billing_address = $data['billing_address'];
+        $shipping_address = $data['shipping_address'];
+        $token = $data['token'];
+        $role_id = $data['role_id'];
+
         mysqli_stmt_bind_param(
             $stmt,
-            "ssssssssi",
-            $data['user_name'],
-            $data['email'],
-            $data['pwd'],
-            $data['fname'],
-            $data['lname'],
-            $data['billing_address_id'],
-            $data['shipping_address_id'],
-            $data['token'],
-            $data['role_id']
+            "sssssssss",
+            $user_name,
+            $email,
+            $pwd,
+            $fname,
+            $lname,
+            $billing_address,
+            $shipping_address,
+            $token,
+            $role_id
         );
 
         $result = mysqli_stmt_execute($stmt);
 
         if ($result) {
-            // L'insertion a réussi
-            $successMessage = "Utilisateur enregistré avec succès !";
+            // Insertion successful
+            $successMessage = "<br><br><h1>User successfully registered!<br>You can login now.</h1>";
+
             return $successMessage;
         } else {
-            // L'insertion a échoué, renvoyer un message d'erreur
-            $errorMessage = "Erreur lors de l'enregistrement de l'utilisateur.";
+            // Insertion failed, return an error message
+            $errorMessage = "Error during user registration.";
             return $errorMessage;
         }
     } else {
-        // Erreur de préparation de la requête, renvoyer un message d'erreur
-        $errorMessage = "Erreur de préparation de la requête.";
+        // Error preparing the query, return an error message
+        $errorMessage = "Error preparing the query.";
         return $errorMessage;
     }
 }

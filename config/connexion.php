@@ -2,7 +2,7 @@
 $server = "localhost";
 $userName = "root";
 $pwd = "";
-$db = "ecom1_projet";
+$db = "ecom1_project";
 
 //pour se connecter avec la base de donnee
 $conn = mysqli_connect($server, $userName, $pwd, $db);
