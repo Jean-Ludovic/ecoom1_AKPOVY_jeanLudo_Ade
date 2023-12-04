@@ -52,7 +52,9 @@ function createUser(array $data)
 
         if ($result) {
             // Insertion successful
-            $successMessage = "<br><br><h1>User successfully registered!<br>You can login now.</h1>";
+            $successMessage = "<br><br><h1>User successfully registered!</h1>"
+                . "<h2><p>You can login now. <a href='../interfacesConn/login.php' style='color: #3498db; text-decoration: none;'>Click here to Login</a>.</p></h2>";
+
 
             return $successMessage;
         } else {
