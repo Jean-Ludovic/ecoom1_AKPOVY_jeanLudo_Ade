@@ -70,7 +70,7 @@ function createUser(array $data)
 }
 
 
-require_once("connexion.php");
+
 
 function loginUser($user_name, $pwd)
 {

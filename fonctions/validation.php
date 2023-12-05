@@ -6,7 +6,6 @@ function usernameIsValid(string $user_name): array
     $result = [
         'isValid' => true,
         'msg' => ''
-
     ];
 
     $userInDB = getUserByUsername($user_name);
@@ -15,19 +14,16 @@ function usernameIsValid(string $user_name): array
         $result = [
             'isValid' => false,
             'msg' => 'Le username utilisé est trop court'
-
         ];
     } elseif ($length > 20) {
         $result = [
             'isValid' => false,
             'msg' => 'Le username utilisé est trop long'
-
         ];
-    } elseif ($length = 0) {
+    } elseif ($length == 0) {
         $result = [
             'isValid' => false,
             'msg' => 'Veuillez saisir un Username'
-
         ];
     } elseif ($userInDB) {
         $result = [
@@ -58,7 +54,7 @@ function fnameIsValid($fname)
             'isValid' => false,
             'msg' => 'Prenom trop court'
         ];
-    } elseif ($length = 0) {
+    } elseif ($length == 0) {
         $responses = [
             'isValid' => false,
             'msg' => 'Case Prenom est non rempli'
@@ -68,6 +64,7 @@ function fnameIsValid($fname)
     return $valeur;
 }
 
+
 function lnameIsValid($lname)
 {
     $length = strlen($lname);
@@ -76,6 +73,7 @@ function lnameIsValid($lname)
         'isValid' => true,
         'msg' => ''
     ];
+
     if ($length >= 51) {
         $responses = [
             'isValid' => false,
@@ -86,7 +84,7 @@ function lnameIsValid($lname)
             'isValid' => false,
             'msg' => 'Nom trop court'
         ];
-    } elseif ($length = 0) {
+    } elseif ($length == 0) {
         $responses = [
             'isValid' => false,
             'msg' => 'Case Nom est non rempli'
@@ -96,9 +94,9 @@ function lnameIsValid($lname)
     return $valeur;
 }
 
+
 function emailIsValid($email)
 {
-
     $email_validation_regex = "/^[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/";
     if (!preg_match($email_validation_regex, $email)) {
         return [
@@ -113,14 +111,11 @@ function emailIsValid($email)
 }
 
 
+
 function pwdLenghtValidation($pwd)
 {
     //minimum 6 max 16
     $length = strlen($pwd);
-    return [
-        'isValid' => true,
-        'msg' => ''
-    ];
 
     if ($length < 6) {
         return [
@@ -133,7 +128,13 @@ function pwdLenghtValidation($pwd)
             'msg' => 'Votre mot de passe est trop long. Doit être inférieur a 16 caractères'
         ];
     }
+
+    return [
+        'isValid' => true,
+        'msg' => ''
+    ];
 }
+
 function getUserByUsername(string $username)
 {
     global $conn;

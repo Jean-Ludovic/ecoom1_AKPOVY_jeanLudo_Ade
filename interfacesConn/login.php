@@ -13,7 +13,7 @@
     <a href="../index.php">Retour</a>
 
     <div class="wrapper">
-        <form method="post" action="">
+        <form method="post" action="../config/login_process.php">
             <fieldset>
                 <legend>
                     <h2>Login</h2>
@@ -21,7 +21,7 @@
                 <p>Please enter your login details</p>
 
                 <div class="input-box">
-                    <input id="username" name="username" type="text" placeholder="USername">
+                    <input id="username" name="username" type="text" placeholder="Username">
                     <i class='bx bxs-user-circle'></i>
                 </div>
                 <div class="input-box">
