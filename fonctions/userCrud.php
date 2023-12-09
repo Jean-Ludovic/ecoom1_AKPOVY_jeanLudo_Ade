@@ -76,27 +76,35 @@ function loginUser($user_name, $pwd)
 {
     global $conn;
 
-    // Vérifiez l'authentification en fonction de votre logique
-    // Je vais utiliser une requête simple pour illustrer, mais vous devriez améliorer cela avec des méthodes sécurisées
-
-    $query = "SELECT user_id, role_id FROM user WHERE user_name = ? AND pwd = ? LIMIT 1";
+    // Récupérer le mot de passe haché de la base de données
+    $query = "SELECT user_id, role_id, pwd FROM user WHERE user_name = ? LIMIT 1";
 
     if ($stmt = mysqli_prepare($conn, $query)) {
-        mysqli_stmt_bind_param($stmt, "ss", $user_name, $pwd);
+        mysqli_stmt_bind_param($stmt, "s", $user_name);
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $user_id, $role_id);
+        mysqli_stmt_bind_result($stmt, $user_id, $role_id, $hashed_password);
 
         if (mysqli_stmt_fetch($stmt)) {
-            // Authentification réussie, retournez les informations nécessaires
-            return [
-                'success' => true,
-                'user_id' => $user_id,
-                'role_id' => $role_id
-            ];
+            // Vérifier le mot de passe avec password_verify
+            if (password_verify($pwd, $hashed_password)) {
+                // Authentification réussie, retournez les informations nécessaires
+                return [
+                    'success' => true,
+                    'user_id' => $user_id,
+                    'role_id' => $role_id
+                ];
+            } else {
+                // Mot de passe incorrect
+                return [
+                    'success' => false,
+                    'error' => 'Incorrect password'
+                ];
+            }
         } else {
-            // Authentification échouée
+            // Utilisateur non trouvé
             return [
-                'success' => false
+                'success' => false,
+                'error' => 'User not found'
             ];
         }
 
@@ -104,7 +112,8 @@ function loginUser($user_name, $pwd)
     } else {
         // Erreur de préparation de la requête
         return [
-            'success' => false
+            'success' => false,
+            'error' => 'Error preparing SQL statement'
         ];
     }
 }

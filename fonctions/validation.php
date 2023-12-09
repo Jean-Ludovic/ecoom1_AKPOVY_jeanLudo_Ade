@@ -34,11 +34,9 @@ function usernameIsValid(string $user_name): array
     return $result;
 }
 
-
 function fnameIsValid($fname)
 {
     $length = strlen($fname);
-    $valeur = is_string($fname);
     $responses = [
         'isValid' => true,
         'msg' => ''
@@ -61,14 +59,11 @@ function fnameIsValid($fname)
         ];
     }
     return $responses;
-    return $valeur;
 }
-
 
 function lnameIsValid($lname)
 {
     $length = strlen($lname);
-    $valeur = is_string($lname);
     $responses = [
         'isValid' => true,
         'msg' => ''
@@ -91,9 +86,7 @@ function lnameIsValid($lname)
         ];
     }
     return $responses;
-    return $valeur;
 }
-
 
 function emailIsValid($email)
 {
@@ -109,8 +102,6 @@ function emailIsValid($email)
         'msg' => '',
     ];
 }
-
-
 
 function pwdLenghtValidation($pwd)
 {

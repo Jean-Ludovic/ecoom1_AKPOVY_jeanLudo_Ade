@@ -23,57 +23,57 @@ require_once("../fonctions/userCrud.php");
                     <h2>Sign Up</h2>
                 </legend>
 
+                <?php echo displayError('lname'); ?>
                 <label for="lname">Last Name</label>
                 <div class="input-box">
-                    <input id="lname" name="lname" type="text">
+                    <input id="lname" name="lname" type="text" value="<?php echo isset($_POST['lname']) ? htmlspecialchars($_POST['lname']) : ''; ?>">
                     <i class='bx bxs-user'></i>
-                    <?php if (isset($errors['lname'])) echo "<span class='error'>{$errors['lname']}</span>"; ?>
+
+
                 </div>
 
+                <?php echo displayError('fname'); ?>
                 <label for="fname">First Name</label>
                 <div class="input-box">
-                    <input id="fname" name="fname" type="text">
-                    <i class='bx bxs-user'></i>
-                    <?php if (isset($errors['fname'])) echo "<span class='error'>{$errors['fname']}</span>"; ?>
+                    <input id="fname" name="fname" type="text" value="<?php echo isset($_POST['fname']) ? $_POST['fname'] : ''; ?>">
+
                 </div>
 
+                <?php echo displayError('use_name'); ?>
                 <label for="user_name">User Name</label>
                 <div class="input-box">
-                    <input id="user_name" name="user_name" type="text">
-                    <i class='bx bxs-user'></i>
-                    <?php if (isset($errors['user_name'])) echo "<span class='error'>{$errors['user_name']}</span>"; ?>
+                    <input id="user_name" name="user_name" type="text" value="<?php echo isset($_POST['user_name']) ? $_POST['user_name'] : ''; ?>">
+
                 </div>
 
+                <?php echo displayError('email'); ?>
                 <label for="email">Email</label>
                 <div class="input-box">
-                    <input id="email" name="email" type="email">
+                    <input id="email" name="email" type="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
                     <i class='bx bxs-envelope'></i>
-                    <?php if (isset($errors['email'])) echo "<span class='error'>{$errors['email']}</span>"; ?>
                 </div>
 
+                <?php echo displayError('pwd'); ?>
                 <label for="pwd">Password</label>
                 <div class="input-box">
-                    <input id="pwd" name="pwd" type="password">
-                    <i class='bx bxs-lock'></i>
-                    <?php if (isset($errors['pwd'])) echo "<span class='error'>{$errors['pwd']}</span>"; ?>
+                    <input id="pwd" name="pwd" type="password" value="<?php echo isset($_POST['pwd']) ? $_POST['pwd'] : ''; ?>">
+
                 </div>
 
                 <label for="billing_address">Billing Address</label>
                 <div class="input-box">
-                    <input id="billing_address" name="billing_address" type="text">
-                    <?php if (isset($errors['billing_address'])) echo "<span class='error'>{$errors['billing_address']}</span>"; ?>
+                    <input id="billing_address" name="billing_address" type="text" value="<?php echo isset($_POST['billing_address']) ? $_POST['billing_address'] : ''; ?>">
                 </div>
                 <label for="shipping_address">Shipping Address</label>
                 <div class="input-box">
-                    <input id="shipping_address" name="shipping_address" type="text">
-                    <?php if (isset($errors['shipping_address'])) echo "<span class='error'>{$errors['shipping_address']}</span>"; ?>
+                    <input id="shipping_address" name="shipping_address" type="text" value="<?php echo isset($_POST['shipping_address']) ? $_POST['shipping_address'] : ''; ?>">
                 </div>
 
 
 
 
 
-                <button type="submit">Sign Up</button>
+                <button type=" submit">Sign Up</button>
 
             </fieldset>
         </form>
