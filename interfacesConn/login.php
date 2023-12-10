@@ -15,21 +15,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result) {
         $row = mysqli_fetch_assoc($result);
-    
+
         // Vérifier l'existence de l'utilisateur
         if ($row) {
             $_SESSION["user_id"] = $row["id"];
             $_SESSION["user_nom"] = $row["user_name"];
-    
+
             // Vérifier le rôle de l'utilisateur et rediriger en conséquence
             if ($row["role_id"] == 2) {
-                header("Location: ../results/acceuil_admin.php");
+                header("Location: ../results/acceuil.admin.php");
             } elseif ($row["role_id"] == 1) {
                 header("Location: ../results/acceuil_user.php");
             } else {
                 echo "Rôle non reconnu. Veuillez contacter l'administrateur.";
             }
-    
+
             // Assurez-vous de terminer le script après la redirection
             exit();
         } else {
@@ -38,7 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Erreur lors de la connexion : " . mysqli_error($conn);
     }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -80,7 +82,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
 </body>
-
-</html>
 
 </html>
