@@ -13,7 +13,7 @@
         <h1>Administration Interface</h1>
 
         <h2>items adding</h2>
-        <form method="post" action=".//">
+        <form method="post" action="../admin/ajout_produit.php">
             <button type="submit">Add an item</button>
         </form>
         </section>
@@ -21,7 +21,7 @@
         <!-- Gestion des utilisateurs -->
         <section>
             <h2>Users Management </h2>
-            <form method="post" action="gestion_utilisateurs.php">
+            <form method="post" action="../admin/gestion_utilisateurs.php">
                 <button type="submit">Manage users</button>
             </form>
         </section>
@@ -31,7 +31,7 @@
         ?>
         <section>
             <h2>Actions réservées aux super-administrateurs</h2>
-            <form method="post" action="actions_super_admin.php">
+            <form method="post" action="../admin/actions_super_admin.php">
                 <button type="submit">Super Admin Actions</button>
             </form>
         </section>
@@ -41,7 +41,7 @@
         <!-- Déconnexion -->
         <section>
             <h2>Déconnexion</h2>
-            <form method="post" action="deconnexion.php">
+            <form method="post" action="../interfacesConn/login.php">
                 <button type="submit">Logout</button>
             </form>
         </section>
