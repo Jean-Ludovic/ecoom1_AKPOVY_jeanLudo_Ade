@@ -2,36 +2,43 @@
 require_once("../config/connexion.php");
 require_once("../fonctions/userCrud.php");
 
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérer les données du formulaire
-    $user_name = isset($_POST["user_name"]) ? $_POST["user_name"] : '';
-    $pwd = isset($_POST["pwd"]) ? $_POST["pwd"] : '';
+    $username = $_POST["username"];
+    $mot_de_passe = $_POST["pwd"];
 
-    // Appeler la fonction loginUser avec les données du formulaire
-    $loginResult = loginUser($user_name, $pwd);
+    // Rechercher l'utilisateur dans la base de données
+    $query = "SELECT * FROM user WHERE user_name ='$username'";
+    $result = mysqli_query($conn, $query);
 
-    // Vérifier le résultat de la connexion
-    if ($loginResult['success']) {
-        // Démarrer la session si ce n'est pas déjà fait
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+    
+        // Vérifier l'existence de l'utilisateur
+        if ($row) {
+            $_SESSION["user_id"] = $row["id"];
+            $_SESSION["user_nom"] = $row["user_name"];
+    
+            // Vérifier le rôle de l'utilisateur et rediriger en conséquence
+            if ($row["role_id"] == 2) {
+                header("Location: ../results/acceuil_admin.php");
+            } elseif ($row["role_id"] == 1) {
+                header("Location: ../results/acceuil_user.php");
+            } else {
+                echo "Rôle non reconnu. Veuillez contacter l'administrateur.";
+            }
+    
+            // Assurez-vous de terminer le script après la redirection
+            exit();
+        } else {
+            echo "Identifiants incorrects. Veuillez réessayer.";
         }
-
-        // Stocker les informations de l'utilisateur dans la session si nécessaire
-        $_SESSION['user_id'] = $loginResult['user_id'];
-        $_SESSION['role_id'] = $loginResult['role_id'];
-
-        // Rediriger l'utilisateur vers la page appropriée
-        header("Location: acceuil_user.php");
-        exit();
     } else {
-        // Afficher un message d'erreur
-        echo "Login failed: " . $loginResult['error'];
+        echo "Erreur lors de la connexion : " . mysqli_error($conn);
     }
-}
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>Please enter your login details</p>
 
                 <div class="input-box">
-                    <input id="username" name="username" type="text" placeholder="usernme">
+                    <input id="username" name="username" type="text" placeholder="user name">
                     <i class='bx bxs-user-circle'></i>
                 </div>
                 <div class="input-box">

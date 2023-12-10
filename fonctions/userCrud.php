@@ -77,7 +77,7 @@ function loginUser($user_name, $pwd)
     global $conn;
 
     // Récupérer le mot de passe haché de la base de données
-    $query = "SELECT user_id, role_id, pwd FROM user WHERE user_name = ? LIMIT 1";
+    $query = "SELECT id, role_id, pwd FROM user WHERE user_name = ? LIMIT 1";
 
     if ($stmt = mysqli_prepare($conn, $query)) {
         mysqli_stmt_bind_param($stmt, "s", $user_name);
@@ -113,7 +113,7 @@ function loginUser($user_name, $pwd)
         // Erreur de préparation de la requête
         return [
             'success' => false,
-            'error' => 'Error preparing SQL statement'
+            'error' => 'Error preparing SQL statement: ' . mysqli_error($conn)
         ];
     }
 }
