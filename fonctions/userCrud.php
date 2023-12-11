@@ -117,3 +117,23 @@ function loginUser($user_name, $pwd)
         ];
     }
 }
+function upgradeUserRole($user_id, $new_role)
+{
+    global $conn;
+
+    // Exécutez votre logique pour mettre à niveau le rôle de l'utilisateur ici
+    $query = "UPDATE user SET role_id = $new_role WHERE id = $user_id";
+    $result = mysqli_query($conn, $query);
+
+    return $result;
+}
+function deleteUser($user_id)
+{
+    global $conn;
+
+    // Exécutez votre logique pour supprimer l'utilisateur ici
+    $query = "DELETE FROM user WHERE id = $user_id";
+    $result = mysqli_query($conn, $query);
+
+    return $result;
+}
