@@ -13,9 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add_product"])) {
     $result = addProduct($name, $quantity, $price, $img_url, $description);
 
     if ($result) {
-        echo "Produit ajouté avec succès.";
+        echo "<br><br>Produit ajouté avec succès.";
     } else {
-        echo "Erreur lors de l'ajout du produit : " . mysqli_error($conn);
+        echo "<br><br>Erreur lors de l'ajout du produit : " . mysqli_error($conn);
     }
 }
 
@@ -62,6 +62,10 @@ $products = getAllProducts();
             <!-- Bouton pour soumettre le formulaire -->
             <button type="submit" name="add_product">add product</button>
         </form>
+    </section>
+    <!-- Back to Admin Dashboard -->
+    <section>
+        <a href="../results/acceuil.admin.php">Back to Admin Dashboard</a>
     </section>
 
 </body>

@@ -1,5 +1,5 @@
 <?php
-require_once("product_functions.php");
+require_once("../fonctions/product_crud.php");
 
 // Récupérer tous les produits
 $products = getAllProducts();
@@ -11,19 +11,22 @@ $products = getAllProducts();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil Utilisateur</title>
+    <link rel="stylesheet" href="./style_produit.css">
+    <title>Liste des Produits</title>
 </head>
 
 <body>
-    <h2>Liste des produits</h2>
+    <h1>Liste des Produits</h1>
 
-    <ul>
-        <?php foreach ($products as $product) : ?>
-            <li><?php echo $product['name']; ?></li>
-        <?php endforeach; ?>
-    </ul>
-
-    <!-- Autres éléments de la page acceuil_user.php -->
+    <?php foreach ($products as $product) : ?>
+        <div class="product">
+            <img src="<?= $product['img_url']; ?>" alt="<?= $product['name']; ?>">
+            <h2><?= $product['name']; ?></h2>
+            <p>Prix: <?= $product['price']; ?></p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    <?php endforeach; ?>
 </body>
+
 
 </html>

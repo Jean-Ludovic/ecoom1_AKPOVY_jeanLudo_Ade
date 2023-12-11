@@ -15,7 +15,7 @@ function getAllProducts()
 {
     global $conn;
 
-    $query = "SELECT * FROM product";
+    $query = "SELECT id, name, img_url, price , description FROM product";
     $result = mysqli_query($conn, $query);
 
     $products = [];
