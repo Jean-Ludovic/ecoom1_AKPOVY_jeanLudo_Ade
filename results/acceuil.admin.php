@@ -41,7 +41,7 @@
         <!-- Déconnexion -->
         <section>
             <h2>Déconnexion</h2>
-            <form method="post" action="../interfacesConn/login.php">
+            <form method="post" action="../index.php">
                 <button type="submit">Logout</button>
             </form>
         </section>
