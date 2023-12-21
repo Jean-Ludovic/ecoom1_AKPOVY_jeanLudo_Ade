@@ -1,0 +1,36 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.quantity-modify {
+    background-color: #f2f2f2;
+    border: none;
+    padding: 5px;
+    margin: 0 5px;
+}
+
+.quantity-input {
+    text-align: center;
+    width: 40px;
+    margin: 0 5px;
+}
+
+.checkout {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pay-button {
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
