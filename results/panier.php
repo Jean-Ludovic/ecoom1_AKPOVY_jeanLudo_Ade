@@ -1,38 +1,5 @@
-<?php
-session_start();
-require_once("../fonctions/product_crud.php");
-
-// Initialiser le total général
-$totalGeneral = 0;
-foreach ($_SESSION['cart'] as &$item) {
-    if (!isset($item['quantity'])) {
-        $item['quantity'] = 1; //  chaque produit a une quantité
-    }
-}
-if (isset($_POST['change_quantity'])) {
-    $index = $_POST['item_index'];
-    $newQuantity = $_SESSION['cart'][$index]['quantity'];
-
-    if ($_POST['change_quantity'] === 'increase') {
-        $newQuantity++;
-    } elseif ($_POST['change_quantity'] === 'decrease') {
-        $newQuantity--;
-    }
-
-    updateQuantity($index, $newQuantity);
-}
-
-// Initialiser le total général
-$totalGeneral = 0;
-
-// Calculer le total général
-foreach ($_SESSION['cart'] as $item) {
-    $totalGeneral += recalculateItemTotal($item);
-}
-?>
-
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -42,45 +9,98 @@ foreach ($_SESSION['cart'] as $item) {
 </head>
 
 <body>
-    <h1>Votre Panier</h1>
+    <a href="./acceuil_user.php">RETOUR AUX COMMANDES</a>
+    <?php
 
-    <table>
-        <thead>
-            <tr>
-                <th>Article</th>
-                <th>Quantité</th>
-                <th>Prix Unitaire</th>
-                <th>Prix Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($_SESSION['cart'] as $index => $item) : ?>
-                <tr>
-                    <td><?= htmlspecialchars($item['name']) ?></td>
-                    <td>
-                        <form action="panier.php" method="post">
-                            <button type="submit" name="change_quantity" value="decrease">-</button>
-                            <input type="text" name="product_quantity" value="<?= $item['quantity'] ?>" readonly>
-                            <button type="submit" name="change_quantity" value="increase">+</button>
-                            <input type="hidden" name="item_index" value="<?= $index ?>">
-                        </form>
-                    </td>
-                    <td><?= htmlspecialchars($item['price']) ?>€</td>
-                    <td><?= htmlspecialchars(recalculateItemTotal($item)) ?>€</td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="3">Total Général</th>
-                <th><?= htmlspecialchars($totalGeneral) ?>€</th> <!-- Sécuriser la sortie -->
-            </tr>
-        </tfoot>
-    </table>
+    session_start();
+    require_once("../fonctions/product_crud.php");
+    // Ajouter un produit au panier
+    if (isset($_POST['action']) && $_POST['action'] == 'add') {
+        $product_name = $_POST['product_name'];
+        $product_price = $_POST['product_price'];
+        // Vérifier si le produit est déjà dans le panier
+        $product_found = false;
+        for ($i = 0; $i < count($_SESSION['cart']); $i++) {
+            if ($_SESSION['cart'][$i]['name'] == $product_name) {
+                $_SESSION['cart'][$i]['quantity']++;
+                $product_found = true;
+                break;
+            }
+        }
+        // Si le produit n'est pas trouvé, l'ajouter au panier
+        if (!$product_found) {
+            $_SESSION['cart'][] = array('name' => $product_name, 'price' => $product_price, 'quantity' => 1);
+        }
+    }
 
-    <div class="checkout">
-        <button onclick="location.href='paiement.php'" class="pay-button">Payer</button>
-    </div>
+    // Gérer l'augmentation et la réduction de la quantité
+    if (isset($_POST['action'])) {
+        $index = $_POST['item_index'] ?? null; // Utilisez ?? pour définir null si 'item_index' n'est pas défini.
+        if ($index !== null) {
+            switch ($_POST['action']) {
+                case 'increase':
+                    $_SESSION['cart'][$index]['quantity']++;
+                    break;
+                case 'decrease':
+                    if ($_SESSION['cart'][$index]['quantity'] > 1) {
+                        $_SESSION['cart'][$index]['quantity']--;
+                    }
+                    break;
+                case 'delete':
+                    removeItemFromCart($index);
+                    break;
+                case 'add':
+                    $product_name = $_POST['product_name'];
+                    $product_price = $_POST['product_price'];
+                    $product_found = false;
+                    foreach ($_SESSION['cart'] as $i => $item) {
+                        if ($item['name'] === $product_name) {
+                            $_SESSION['cart'][$i]['quantity']++;
+                            $product_found = true;
+                            break;
+                        }
+                    }
+                    if (!$product_found) {
+                        $_SESSION['cart'][] = array('name' => $product_name, 'price' => $product_price, 'quantity' => 1);
+                    }
+                    break;
+            }
+        }
+
+        // Redirection après l'exécution de l'action
+        header('Location: panier.php');
+        exit;
+    }
+
+    // Afficher les produits dans le panier
+    $totalGeneral = 0;
+    foreach ($_SESSION['cart'] as $index => $product) {
+        $total = $product['price'] * $product['quantity'];
+        $totalGeneral += $total;
+        echo "<div class='product'>";
+        echo "<div class='product-name'>{$product['name']} - {$product['quantity']} - {$product['price']}€ - Total: {$total}€</div>";
+        // Boutons pour modifier la quantité
+        echo "<form action='panier.php' method='post'>
+            <input type='hidden' name='item_index' value='{$index}'>
+            <button type='submit' name='action' value='increase'>+</button>
+            <input type='text' value='{$product['quantity']}' readonly>
+            <button type='submit' name='action' value='decrease'>-</button>
+          </form>";
+
+        echo "<form action='panier.php' method='post' style='display: inline;'>
+          <input type='hidden' name='item_index' value='{$index}'>
+          <input type='hidden' name='action' value='delete'>
+          <button type='submit'>Supprimer</button>
+        </form>";
+        echo "</div>";
+    }
+
+
+
+    // Afficher le total général
+    echo "</div>";
+    echo "<div class='total-general'>Total Général: {$totalGeneral}€</div>";
+    ?>
 </body>
 
 </html>

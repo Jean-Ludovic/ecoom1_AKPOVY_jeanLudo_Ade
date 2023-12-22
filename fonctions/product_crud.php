@@ -54,6 +54,8 @@ function addToCart($productName, $productPrice)
 }
 
 
+
+
 function createOrder($ref, $date, $total, $userId, $mysqli)
 {
     //  insérer une nouvelle commande
@@ -91,9 +93,16 @@ function updateQuantity($index, $newQuantity)
     }
     $_SESSION['cart'][$index]['quantity'] = $newQuantity;
 }
-
 // Fonction pour recalculer le prix total d'un article
 function recalculateItemTotal($item)
 {
     return $item['quantity'] * $item['price'];
+}
+
+function removeItemFromCart($index)
+{
+    // Assurez-vous que l'index est numérique et dans la plage du tableau
+    if (isset($_SESSION['cart'][$index])) {
+        array_splice($_SESSION['cart'], $index, 1);
+    }
 }

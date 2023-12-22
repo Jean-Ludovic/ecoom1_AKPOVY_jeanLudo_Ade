@@ -37,12 +37,15 @@ if (isset($_POST['product_name']) && isset($_POST['product_price'])) {
     <!-- Liste des produits -->
     <?php foreach ($products as $product) : ?>
         <div class="product">
-            <img src="<?= $product['img_url']; ?>" alt="<?= $product['name']; ?>">
-            <h2><?= $product['name']; ?></h2>
-            <p>Prix: <?= $product['price']; ?>€</p>
-            <form action="./panier.php" method="post">
-                <input type="hidden" name="product_name" value="<?= $product['name']; ?>">
-                <input type="hidden" name="product_price" value="<?= $product['price']; ?>">
+            <h2><?= htmlspecialchars($product['name']); ?></h2>
+            <img src="<?= htmlspecialchars($product['img_url']); ?>" alt="<?= htmlspecialchars($product['name']); ?>" style="width:100px; height:auto;">
+            <p>Prix: <?= htmlspecialchars($product['price']); ?>€</p>
+            <form action="panier.php" method="post">
+                <input type="hidden" name="action" value="add">
+                <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['name']); ?>">
+                <input type="hidden" name="product_price" value="<?= htmlspecialchars($product['price']); ?>">
+                <!-- Ajoutez un champ caché pour l'URL de l'image -->
+                <input type="hidden" name="product_img_url" value="<?= htmlspecialchars($product['img_url']); ?>">
                 <button type="submit" class="add-to-cart">Add to Cart</button>
             </form>
         </div>
