@@ -8,7 +8,7 @@ $products = getAllProducts();
 // Vérifier si le formulaire a été soumis et ajouter le produit au panier
 $message = '';
 if (isset($_POST['product_name']) && isset($_POST['product_price'])) {
-    addToCart($_POST['product_name'], $_POST['product_price']);
+    addToCart($_POST['product_name'], $_POST['product_price'], $_POST['url']);
     $message = 'Le produit a été ajouté au panier.';
 }
 ?>

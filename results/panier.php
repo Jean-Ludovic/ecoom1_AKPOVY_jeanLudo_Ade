@@ -9,11 +9,90 @@
 </head>
 
 <body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .total-general {
+            font-weight: bold;
+            text-align: right;
+            padding-top: 20px;
+        }
+
+        .button-payer {
+            display: block;
+            width: 100px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button-payer:hover {
+            background-color: #45a049;
+        }
+
+        .quantity-controls {
+            display: flex;
+            justify-content: center;
+        }
+
+        .quantity-controls button {
+            padding: 5px 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .quantity-controls input {
+            text-align: center;
+            width: 50px;
+        }
+
+        /* Ajoutez d'autres styles spécifiques ici selon vos besoins */
+    </style>
     <a href="./acceuil_user.php">RETOUR AUX COMMANDES</a>
     <?php
 
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+
+
     session_start();
     require_once("../fonctions/product_crud.php");
+
     // Ajouter un produit au panier
     if (isset($_POST['action']) && $_POST['action'] == 'add') {
         $product_name = $_POST['product_name'];
@@ -72,21 +151,37 @@
         exit;
     }
 
+    if (isset($_POST['action']) && $_POST['action'] == 'payer') {
+        $user_id = $_SESSION['user_id']; // Obtenir l'ID de l'utilisateur de la session ou d'ailleurs
+        $cart = $_SESSION['cart']; // Obtenir le panier de la session
+
+        $paymentSuccess = processPayment($user_id, $cart, $conn);
+
+        if ($paymentSuccess) {
+            $_SESSION['cart'] = array(); // Vider le panier en cas de succès
+            header("Location: paiement.php"); // Redirigez vers une page de succès
+        } else {
+            header("Location: error.php"); // Redirigez vers une page d'erreur
+        }
+        exit;
+    }
+
     // Afficher les produits dans le panier
     $totalGeneral = 0;
     foreach ($_SESSION['cart'] as $index => $product) {
         $total = $product['price'] * $product['quantity'];
         $totalGeneral += $total;
-        echo "<div class='product'>";
-        echo "<div class='product-name'>{$product['name']} - {$product['quantity']} - {$product['price']}€ - Total: {$total}€</div>";
-        // Boutons pour modifier la quantité
-        echo "<form action='panier.php' method='post'>
-            <input type='hidden' name='item_index' value='{$index}'>
-            <button type='submit' name='action' value='increase'>+</button>
-            <input type='text' value='{$product['quantity']}' readonly>
-            <button type='submit' name='action' value='decrease'>-</button>
-          </form>";
+    ?>
+        <div class='product'>
+            <div class='product-name'><?php echo $product['name'] . " -  " . $product['quantity'] . " - " . $product['price'] . "€ - Total: " . $total ?> €</div>
 
+            <form action='panier.php' method='post'>
+                <input type='hidden' name='item_index' value='<?php echo $index ?>'>
+                <button type='submit' name='action' value='increase'>+</button>
+                <input type='text' value='<?php echo $product['quantity'] ?>' readonly>
+                <button type='submit' name='action' value='decrease'>-</button>
+            </form>
+        <?php
         echo "<form action='panier.php' method='post' style='display: inline;'>
           <input type='hidden' name='item_index' value='{$index}'>
           <input type='hidden' name='action' value='delete'>
@@ -100,7 +195,10 @@
     // Afficher le total général
     echo "</div>";
     echo "<div class='total-general'>Total Général: {$totalGeneral}€</div>";
-    ?>
+    echo "<form action='traitemen_paiement.php' method='post'>";
+    echo "<button type='submit' class='button-payer'>Payer</button>";
+    echo "</form>";
+        ?>
 </body>
 
 </html>

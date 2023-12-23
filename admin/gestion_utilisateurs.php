@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="admin_style.css"> <!-- Assurez-vous d'avoir une feuille de style pour votre interface d'administration -->
+    <link rel="stylesheet" href="admin_style.css">
     <title>User Management</title>
 </head>
 
@@ -51,8 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- List of Users -->
         <section>
             <h2>Users</h2>
-            <!-- Display a list of users from your database -->
-            <!-- ... -->
         </section>
 
         <!-- Upgrade User Role -->
