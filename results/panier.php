@@ -161,7 +161,7 @@
             $_SESSION['cart'] = array(); // Vider le panier en cas de succès
             header("Location: paiement.php"); // Redirigez vers une page de succès
         } else {
-            header("Location: error.php"); // Redirigez vers une page d'erreur
+            header("Location: error.php"); // Rediriger vers une page d'erreur
         }
         exit;
     }
@@ -173,6 +173,8 @@
         $totalGeneral += $total;
     ?>
         <div class='product'>
+            <h3>Votre Panier </h3>
+
             <div class='product-name'><?php echo $product['name'] . " -  " . $product['quantity'] . " - " . $product['price'] . "€ - Total: " . $total ?> €</div>
 
             <form action='panier.php' method='post'>
@@ -189,15 +191,36 @@
         </form>";
         echo "</div>";
     }
+        ?>
 
+        <div class="payment-form-wrapper">
+            <h2>Informations de Paiement</h2>
+            <form action="traitemen_paiement.php" method="post">
+                <div class="form-group">
+                    <label for="card_name">Titulaire de la carte</label>
+                    <input type="text" id="card_name" name="card_name" required placeholder="Nom sur la carte">
+                </div>
+                <div class="form-group">
+                    <label for="card_number">Numéro de la carte</label>
+                    <input type="text" id="card_number" name="card_number" required placeholder="Numéro de la carte">
+                </div>
+                <div class="form-group">
+                    <label for="card_expiry">Date d'expiration</label>
+                    <input type="text" id="card_expiry" name="card_expiry" required placeholder="MM/AA">
+                </div>
+                <div class="form-group">
+                    <label for="card_cvv">CVV</label>
+                    <input type="text" id="card_cvv" name="card_cvv" required placeholder="CVV">
+            </form>
+        </div>
 
-
-    // Afficher le total général
-    echo "</div>";
-    echo "<div class='total-general'>Total Général: {$totalGeneral}€</div>";
-    echo "<form action='traitemen_paiement.php' method='post'>";
-    echo "<button type='submit' class='button-payer'>Payer</button>";
-    echo "</form>";
+        <?php
+        // Afficher le total général
+        echo "</div>";
+        echo "<div class='total-general'>Total Général: {$totalGeneral}€</div>";
+        echo "<form action='traitemen_paiement.php' method='post'>";
+        echo "<button type='submit' class='button-payer'>Payer</button>";
+        echo "</form>";
         ?>
 </body>
 

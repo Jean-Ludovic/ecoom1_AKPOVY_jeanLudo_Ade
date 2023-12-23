@@ -39,6 +39,7 @@ if (isset($_POST['product_name']) && isset($_POST['product_price'])) {
         <div class="product">
             <h2><?= htmlspecialchars($product['name']); ?></h2>
             <img src="<?= htmlspecialchars($product['img_url']); ?>" alt="<?= htmlspecialchars($product['name']); ?>" style="width:100px; height:auto;">
+
             <p>Prix: <?= htmlspecialchars($product['price']); ?>€</p>
             <form action="panier.php" method="post">
                 <input type="hidden" name="action" value="add">
