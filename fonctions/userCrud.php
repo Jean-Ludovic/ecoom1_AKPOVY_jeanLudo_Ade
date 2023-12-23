@@ -137,3 +137,29 @@ function deleteUser($user_id)
 
     return $result;
 }
+function getCurrentUserRole()
+{
+    global $conn;
+
+
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+
+        $query = "SELECT role_id FROM user WHERE id = ?";
+        if ($stmt = mysqli_prepare($conn, $query)) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $role_id);
+            mysqli_stmt_fetch($stmt);
+            mysqli_stmt_close($stmt);
+
+            return $role_id;
+        } else {
+
+            echo "Erreur de préparation : " . mysqli_error($conn);
+        }
+    } else {
+
+        return null;
+    }
+}

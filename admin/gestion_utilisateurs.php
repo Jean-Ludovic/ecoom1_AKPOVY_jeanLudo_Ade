@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Appeler la fonction pour mettre à niveau le rôle de l'utilisateur
         if (upgradeUserRole($user_id, $new_role)) {
-            echo "Rôle d'utilisateur mis à niveau avec succès.";
+            echo "Rôle de l'utilisateur  mis à niveau avec succès.";
         } else {
             echo "Erreur lors de la mise à niveau du rôle d'utilisateur : " . mysqli_error($conn);
         }
@@ -40,12 +40,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="admin_style.css">
+    <link rel="stylesheet" href="gestQctionStyle.css">
     <title>User Management</title>
 </head>
 
 <body>
+    <section>
+        <a href="../results/acceuil.admin.php">Back to Admin Dashboard</a>
+    </section>
     <div class="admin-wrapper">
+
         <h1>User Management</h1>
 
         <!-- List of Users -->
@@ -115,10 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </section>
 
         <!-- Back to Admin Dashboard -->
-        <section>
-            <a href="../results/acceuil.admin.php">Back to Admin Dashboard</a>
-        </section>
+
     </div>
+
 </body>
 
 </html>

@@ -16,7 +16,7 @@
 
         <button type="button"><a href="./interfacesConn/login.php">Login</a></button>
     </form>
-    </form>
+
 </body>
 
 </html>
