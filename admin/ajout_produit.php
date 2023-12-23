@@ -37,25 +37,24 @@ $products = getAllProducts();
     <section>
         <h2>Ajout de produits</h2>
 
-        <!-- Formulaire pour ajouter un produit -->
+
         <form method="post" action="ajout_produit.php">
-            <!-- Champ pour le nom du produit -->
+
             <label for="name">item's Name:</label>
             <input type="text" id="name" name="name" required>
 
-            <!-- Champ pour la quantité -->
+
             <label for="quantity">Quantity:</label>
             <input type="number" id="quantity" name="quantity" required>
 
-            <!-- Champ pour le prix -->
+
             <label for="price">Price:</label>
             <input type="text" id="price" name="price" required>
 
-            <!-- Champ pour l'URL de l'image -->
             <label for="img_url"> image's URL:</label>
             <input type="text" id="img_url" name="img_url" required>
 
-            <!-- Champ pour la description -->
+
             <label for="description">Description:</label>
             <textarea id="description" name="description" rows="4" required></textarea>
 

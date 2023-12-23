@@ -43,7 +43,7 @@ $totalGeneral = calculateTotal($cart);
 $date = date('Y-m-d'); // La date d'aujourd'hui
 $ref = 'Une référence quelconque'; // Vous devrez générer ou obtenir cette référence
 
-// Préparez la requête pour insérer dans la table user_order
+// Préparer la requête pour insérer dans la table user_order
 $query = "INSERT INTO user_order (ref, date, total, user_id) VALUES (?, ?, ?, ?)";
 $stmt = mysqli_prepare($conn, $query);
 mysqli_stmt_bind_param($stmt, 'ssdi', $ref, $date, $totalGeneral, $user_id);
@@ -51,7 +51,7 @@ $result = mysqli_stmt_execute($stmt);
 
 if ($result) {
     $order_id = mysqli_insert_id($conn);
-    // Insérez ici le code pour ajouter des produits dans order_has_product en utilisant $order_id
+
 
     $_SESSION['cart'] = array(); // Vider le panier après le traitement
     // Redirection ou affichage d'un message de succès
@@ -74,12 +74,14 @@ foreach ($cart as $item) {
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'iiid', $order_id, $product_id, $quantity, $price);
     if (!mysqli_stmt_execute($stmt)) {
-        // Gérer l'erreur ici
+        // Gérer l'erreur 
         echo "Erreur lors de l'insertion des détails de la commande pour le produit $product_id : " . mysqli_error($conn);
-        // Vous pourriez vouloir sortir de la boucle ou gérer l'erreur d'une autre manière
+
         break;
     }
 }
 $_SESSION['cart'] = array(); // Vider le panier après le traitement
 echo "Paiement réussi et données insérées DANS ORDER HAS PRODUVT. ID de commande : $order_id";
+//le panier se vide donc la table order has product aussi
+
 ?>

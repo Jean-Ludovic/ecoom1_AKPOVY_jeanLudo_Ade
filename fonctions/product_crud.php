@@ -28,48 +28,43 @@ function getAllProducts()
 }
 function addToCart($productId, $productName, $productPrice)
 {
-    // Vérifiez si le panier est déjà initialisé
+
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = array();
     }
 
-    // Cherchez le produit dans le panier et mettez à jour la quantité si nécessaire
+    // Chercher le produit dans le panier et metter à jour la quantité si nécessaire
     $found = false;
     foreach ($_SESSION['cart'] as &$item) {
         if ($item['id'] === $productId) {
-            $item['quantity']++; // Incrémentez la quantité si le produit existe déjà
+            $item['quantity']++; // Incrémenter la quantité si le produit existe déjà
             $found = true;
             break;
         }
     }
 
-    // Si le produit n'est pas trouvé, ajoutez-le avec une quantité de 1
+    // Si le produit n'est pas trouvé, ajouter-le avec une quantité de 1
     if (!$found) {
         $_SESSION['cart'][] = array(
-            'id' => $productId, // Assurez-vous d'inclure l'ID du produit
+            'id' => $productId, // Assurer-vous d'inclure l'ID du produit
             'name' => $productName,
             'price' => $productPrice,
-            'quantity' => 1 // Initialisez la quantité à 1
+            'quantity' => 1 // Initialiser la quantité à 1
         );
     }
 }
 
 
-
-
-
-
-
 // Fonction pour mettre à jour la quantité d'un produit dans le panier
 function updateQuantity($index, $newQuantity)
 {
-    // Vérifiez que la nouvelle quantité est valide
+    // Vérifier que la nouvelle quantité est valide
     if ($newQuantity < 1) {
         $newQuantity = 1;
     }
     $_SESSION['cart'][$index]['quantity'] = $newQuantity;
 }
-// Fonction pour recalculer le prix total d'un article
+
 function recalculateItemTotal($item)
 {
     return $item['quantity'] * $item['price'];
@@ -77,45 +72,52 @@ function recalculateItemTotal($item)
 
 function removeItemFromCart($index)
 {
-    // Assurez-vous que l'index est numérique et dans la plage du tableau
+
     if (isset($_SESSION['cart'][$index])) {
         array_splice($_SESSION['cart'], $index, 1);
     }
 }
 function processPayment($user_id, $cart, $conn)
 {
-    // Commencez une transaction
-    $conn->begin_transaction();
 
-    try {
-        // Créez une commande et obtenez l'ID de commande
-        $stmt = $conn->prepare("INSERT INTO `orders` (user_id) VALUES (?)"); // Assurez-vous que la table s'appelle bien 'orders'
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $order_id = $stmt->insert_id;
+    $query = "INSERT INTO `orders` (user_id) VALUES (?)";
+    if ($stmt = mysqli_prepare($conn, $query)) {
+        mysqli_stmt_bind_param($stmt, "i", $user_id);
+        mysqli_stmt_execute($stmt);
+        $order_id = mysqli_insert_id($conn);
+        mysqli_stmt_close($stmt);
+    } else {
 
-        // Préparez la requête pour insérer les produits
-        $stmt = $conn->prepare("INSERT INTO order_has_product (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+        echo "Erreur lors de la préparation de la commande : " . mysqli_error($conn);
+        return false;
+    }
 
+    // Préparer la requête pour insérer les produits
+    $query = "INSERT INTO order_has_product (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
+    if ($stmt = mysqli_prepare($conn, $query)) {
         foreach ($cart as $product) {
-            // Assurez-vous que les clés 'id', 'price' et 'quantity' existent dans $product
+
             $product_id = $product['id'];
             $quantity = $product['quantity'];
             $price = $product['price'];
 
-            $stmt->bind_param("iiid", $order_id, $product_id, $quantity, $price);
-            $stmt->execute();
+            mysqli_stmt_bind_param($stmt, "iiid", $order_id, $product_id, $quantity, $price);
+            if (!mysqli_stmt_execute($stmt)) {
+
+                echo "Erreur lors de l'insertion du produit dans la commande : " . mysqli_error($conn);
+                mysqli_stmt_close($stmt);
+                return false;
+            }
         }
+        mysqli_stmt_close($stmt);
+    } else {
 
-        // Validez la transaction
-        $conn->commit();
-
-        // Vider le panier après paiement réussi
-        $_SESSION['cart'] = array();
-
-        return true; // Paiement réussi
-    } catch (Exception $e) {
-        $conn->rollback();
-        return false; // Paiement échoué
+        echo "Erreur lors de la préparation de l'insertion des produits : " . mysqli_error($conn);
+        return false;
     }
+
+    // Vider le panier après paiement réussi
+    $_SESSION['cart'] = array();
+
+    return true; // Paiement réussi
 }
